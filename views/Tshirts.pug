@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  - var Tshirts = [{"size":"small", "color": "Orange", "price": 450},{"size": "medium", "color": "Green", "price": 300},{"size": "Large", "color": "Blue", "price": 750}]
+
+  div(class="container-fluid")
+    div(class="row")
+      each Tshirt in Tshirts
+        div(class="col-sm-2") #{Tshirt.size}
+        div(class="col-sm-2") #{Tshirt.color}
+        div(class="col-sm-2") #{Tshirt.price}
+
+
