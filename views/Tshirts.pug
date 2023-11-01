@@ -2,12 +2,13 @@ extends layout
 
 block content
   h1= title
-  - var Tshirts = [{"size":"small", "color": "Orange", "price": 450},{"size": "medium", "color": "Green", "price": 300},{"size": "Large", "color": "Blue", "price": 750}]
+  - var Tshirts = [{ size: "small", color: "orange", price: 100 },{ size: "medium", color: "red", price: 250 },{ size: "large", color: "green", price: 300 }]
   div(class="container-fluid")
     div(class="row")
-      each Tshirt, index in Tshirts 
-        div(class="col-sm-2" onclick=`buy(${index})`) #{Tshirt.size}, #{Tshirt.color}, #{Tshirt.price}
+      each Tshirt, index in Tshirts
+        div(class="col-sm-2" onclick=`buy(${index})`) #{Tshirt.size}, #{Tshirt.color}, #{Tshirt.price} Rs
       script.
-        function buy(a)
-          alert(`You enjoyed the ${Tshirts[a].size} Tshirt!`)
+        function buy(a) {
+          alert(`You enjoyed the ${a+1} T-shirt!`);
+        }
 
