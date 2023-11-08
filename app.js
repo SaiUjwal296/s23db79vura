@@ -4,17 +4,43 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var app = express();
+require('dotenv').config();
+const connectionString = process.env.MONGO_CON
+mongoose = require('mongoose');
+mongoose.connect(connectionString);
+//Get the default connection
+var db = mongoose.connection;
+//Bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connectionerror:'));
+db.once("open", function(){
+console.log("Connection to DB succeeded")});
+var Tshirts = require("./models/Tshirts");
+async function recreateDB(){
+  // Delete everything
+  await Tshirts.deleteMany();
+  let instance1 = new Tshirts({size:"small", color:'orange', price:'100', cost:15.4});
+  instance1.save().then(doc=>{
+  console.log("First object saved")}
+  ).catch(err=>{
+  console.error(err)
+  });
+  }
+  let reseed = true;
+  if (reseed) {recreateDB();}
+  
+
+
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var TshirtsRouter = require('./routes/Tshirts');
 var boardRouter = require('./routes/board');
 var chooseRouter = require('./routes/choose');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+var resourceRouter = require('./routes/resource');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -27,6 +53,7 @@ app.use('/users', usersRouter);
 app.use('/Tshirts', TshirtsRouter);
 app.use('/board', boardRouter);
 app.use('/choose', chooseRouter);
+app.use('/resource', resourceRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
