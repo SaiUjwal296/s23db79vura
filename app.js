@@ -31,18 +31,19 @@ async function recreateDB() {
   let instance1 = new Tshirts({ size: 'small', color: 'orange', price: '100' });
    await instance1.save();
     console.log('First object saved');
-  
-
-  let instance2 = new Tshirts({ size: 'medium', color: 'red', price: '250' });
-   await instance2.save();
+    let instance2 = new Tshirts({ size: 'medium', color: 'red', price: '250' });
+  instance2.save().then((doc) => {
     console.log('Second object saved');
+  });
+
+  let instance3 = new Tshirts({ size: 'large', color: 'green', price: '300' });
+  instance3.save().then((doc) => {
+    console.log('Third object saved');
+  });
+
+  };
+
   
-
-    let instance3 = new Tshirts({ size: 'large', color: 'green', price: '300' });
-    await instance3.save();
-     console.log('Thrid object saved');
-}
-
 
 // Recreate the database
 let reseed = true;
