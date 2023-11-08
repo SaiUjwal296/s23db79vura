@@ -3,38 +3,57 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose'); // Added missing "const" for mongoose
 
 var app = express();
 require('dotenv').config();
-const connectionString = process.env.MONGO_CON
-mongoose = require('mongoose');
-mongoose.connect(connectionString);
-//Get the default connection
+const connectionString = process.env.MONGO_CON;
+
+// Connect to MongoDB
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Get the default connection
 var db = mongoose.connection;
-//Bind connection to error event
-db.on('error', console.error.bind(console, 'MongoDB connectionerror:'));
-db.once("open", function(){
-console.log("Connection to DB succeeded")});
-var Tshirts = require("./models/Tshirts");
-async function recreateDB(){
+
+// Bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+db.once('open', function () {
+  console.log('Connection to DB succeeded');
+});
+
+// Your Tshirts model and database seeding code
+var Tshirts = require('./models/Tshirts');
+
+async function recreateDB() {
   // Delete everything
   await Tshirts.deleteMany();
-  let instance1 = new Tshirts({size:"small", color:'orange', price:'100', cost:15.4});
-  instance1.save().then(doc=>{
-  console.log("First object saved")}
-  ).catch(err=>{
-  console.error(err)
-  });
-  }
-  let reseed = true;
-  if (reseed) {recreateDB();}
+  let instance1 = new Tshirts({ size: 'small', color: 'orange', price: '100' });
+   await instance1.save();
+    console.log('First object saved');
   
 
+  let instance2 = new Tshirts({ size: 'medium', color: 'red', price: '250' });
+   await instance2.save();
+    console.log('Second object saved');
+  
 
+    let instance3 = new Tshirts({ size: 'large', color: 'green', price: '300' });
+    await instance3.save();
+     console.log('Thrid object saved');
+}
+
+
+// Recreate the database
+let reseed = true;
+if (reseed) {
+  recreateDB();
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var TshirtsRouter = require('./routes/Tshirts');
@@ -54,6 +73,7 @@ app.use('/Tshirts', TshirtsRouter);
 app.use('/board', boardRouter);
 app.use('/choose', chooseRouter);
 app.use('/resource', resourceRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
