@@ -1,0 +1,48 @@
+extends layout
+block content
+  h1= title
+  - let id = toShow._id
+  - let Tshirtssize = toShow.size
+  - let Tshirtscolour = toShow.color
+  - let Tshirtsprice = toShow.price
+  div.row(class='mb-2')
+    div.mr-1 ID is
+    div #{id}
+  - let actionid = "/resource/Tshirts/" + id
+  form(id='TshirtsForm', action= actionid, method="PUT")
+    div.form-group
+      label.TshirtsAttr(for='Tshirtssize') Tshirts size
+      input#Tshirtssize(type='text', name='Tshirtssize', value= Tshirtssize )
+    div.form-group
+      label.TshirtsAttr(for='Tshirtscolour') Tshirts colour
+      input#Tshirtscolour(type='text', name='Tshirtscolour', value= Tshirtscolour )
+    div.form-group
+      label.TshirtsAttr(for='Tshirtsprice') Tshirts price
+      input#Tshirtsprice(type='number', name='Tshirtsprice', value= Tshirtsprice )
+    input(type="submit")
+    script.
+      document.forms.TshirtsForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        try {
+          // TODO: Add loading spinner or other user feedback
+
+          const resp = await fetch(event.target.action, {
+            method: 'PUT',
+            body: new URLSearchParams(new FormData(event.target))
+          });
+
+          if (!resp.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          // Attempt to parse the response as JSON
+          const body = await resp.json();
+          alert("Update succeeded");
+          // TODO: Handle the response body as needed
+        } catch (error) {
+          // Handle non-JSON responses gracefully
+          alert("Update failed: " + error.message);
+
+          // TODO: Handle the error appropriately
+        }
+      });

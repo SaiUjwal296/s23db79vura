@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h1= title
+
+  - let Tshirts_id = toShow._id
+  - let Tshirtssize = toShow.Tshirtssize
+  - let Tshirtscolour = toShow.colour
+  - let Tshirtsprice = toShow.price
+
+  div
+    div.row
+      div.TshirtsAttr.mr-3 Tshirts ID is:
+      div #{Tshirts_id}
+
+    div.row
+      div.TshirtsAttr.mr-3 Tshirts Size is:
+      div #{Tshirtssize}
+
+    div.row
+      div.TshirtsAttr.mr-3 Tshirts colour is:
+      div #{Tshirtscolour}
+
+    div.row
+      div.TshirtsAttr.mr-3 Tshirts price is:
+      div #{Tshirtsprice}
