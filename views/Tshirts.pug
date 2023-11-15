@@ -2,13 +2,19 @@ extends layout
 
 block content
   h1= title
-  - var Tshirts = [{ size: "small", color: "orange", price: 100 },{ size: "medium", color: "red", price: 250 },{ size: "large", color: "green", price: 300 }]
+  //- - var Tshirts = [
+  //-   { size: "small", color: "orange", price: 100 },
+  //-   { size: "medium", color: "red", price: 250 },
+  //-   { size: "large", color: "green", price: 300 }
+  //- ]
+
   div(class="container-fluid")
     div(class="row")
       each Tshirt, index in results 
-        div(class="col-sm-2" onclick=`buy(${index})`) #{Tshirt.size}, #{Tshirt.color}, #{Tshirt.price} Rs
+        div(class="col-sm-4 mb-3 text-center", style=`background-color: ${Tshirt.color}; color: white; padding: 10px; border-radius: 5px; cursor: pointer;`, onclick=`buy(${index})`)
+          | #{Tshirt.size}, #{Tshirt.color}, #{Tshirt.price} Rs
       script.
         function buy(a) {
           alert(`You enjoyed the ${a+1} T-shirt!`);
         }
-
+        
