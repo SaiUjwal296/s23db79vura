@@ -2,10 +2,9 @@ extends layout
 
 block content
   h1= title
-
-  - let Tshirts_id = toShow._id
-  - let Tshirtssize = toShow.Tshirtssize
-  - let Tshirtscolour = toShow.colour
+  - let id = toShow._id
+  - let Tshirtssize = toShow.size
+  - let Tshirtscolour = toShow.color
   - let Tshirtsprice = toShow.price
 
   div
@@ -18,9 +17,9 @@ block content
       div #{Tshirtssize}
 
     div.row
-      div.TshirtsAttr.mr-3 Tshirts colour is:
+      div.TshirtsAttr.mr-3 Tshirts Colour is: 
       div #{Tshirtscolour}
 
     div.row
-      div.TshirtsAttr.mr-3 Tshirts price is:
+      div.TshirtsAttr.mr-3 Tshirts Price is:
       div #{Tshirtsprice}
