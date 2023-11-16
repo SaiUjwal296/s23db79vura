@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy
 const mongoose = require('mongoose'); // Added missing "const" for mongoose
 
 var app = express();
@@ -25,31 +27,31 @@ db.once('open', function () {
 // Your Tshirts model and database seeding code
 var Tshirts = require('./models/Tshirts');
 
-async function recreateDB() {
-  // Delete everything
-  await Tshirts.deleteMany();
-  let instance1 = new Tshirts({ size: 'small', color: 'orange', price: '100' });
-   await instance1.save();
-    console.log('First object saved');
-    let instance2 = new Tshirts({ size: 'medium', color: 'red', price: '250' });
-  instance2.save().then((doc) => {
-    console.log('Second object saved');
-  });
+// async function recreateDB() {
+//   // Delete everything
+//   await Tshirts.deleteMany();
+//   let instance1 = new Tshirts({ size: 'small', color: 'orange', price: '100' });
+//    await instance1.save();
+//     console.log('First object saved');
+//     let instance2 = new Tshirts({ size: 'medium', color: 'red', price: '250' });
+//   instance2.save().then((doc) => {
+//     console.log('Second object saved');
+//   });
 
-  let instance3 = new Tshirts({ size: 'large', color: 'green', price: '300' });
-  instance3.save().then((doc) => {
-    console.log('Third object saved');
-  });
+//   let instance3 = new Tshirts({ size: 'large', color: 'green', price: '300' });
+//   instance3.save().then((doc) => {
+//     console.log('Third object saved');
+//   });
 
-  };
+//   };
 
   
 
-// Recreate the database
-let reseed = true;
-if (reseed) {
-  recreateDB();
-}
+// // Recreate the database
+// let reseed = true;
+// if (reseed) {
+//   recreateDB();
+// }
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -67,6 +69,39 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+  Account.findOne({ username: username })
+  .then(function (user){
+  if (err) { return done(err); }
+  if (!user) {
+  return done(null, false, { message: 'Incorrect username.' });
+  }
+  if (!user.validPassword(password)) {
+  return done(null, false, { message: 'Incorrect password.' });
+  }
+  return done(null, user);
+  })
+  .catch(function(err){
+  return done(err)
+  })
+  })
+  )
+  app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+  }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  // passport config
+// Use the existing connection
+// The Account model
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser())
+  
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

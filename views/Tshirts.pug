@@ -13,8 +13,14 @@ block content
       each Tshirt, index in results 
         div(class="col-sm-4 mb-3 text-center", style=`background-color: ${Tshirt.color}; color: white; padding: 10px; border-radius: 5px; cursor: pointer;`, onclick=`buy(${index})`)
           | #{Tshirt.size}, #{Tshirt.color}, #{Tshirt.price} Rs
-      script.
-        function buy(a) {
-          alert(`You enjoyed the ${a+1} T-shirt!`);
-        }
-        
+          - let destination = `dispatch("/Tshirts/update?id=${Tshirt._id}")`
+        div(class="row-sm-2 m-1") Item #{Tshirt.size}(#{Tshirt.color}) is #{Tshirt.price}
+        button.btn(class="btn-primary ml-1", onclick=destination) Update
+
+  script.
+    function buy(a) {
+      alert(`You enjoyed the ${a+1} T-shirt!`);
+    }
+    function dispatch(path){
+      window.location.href = path;
+    }
