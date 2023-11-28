@@ -1,17 +1,28 @@
+//- extends layout
+
+//- block content
+//-   h1= Ujwal 
+//-   p Welcome to #{Ujwal} world <br>
+//-   button(type="button" class="btn btn-secondary" onclick="goFaster()") Press me 
+
+//-   div#faster Increase the speed 
+//-   script.
+//-     var  mph = 20;
+//-     var change = 1;
+//-     function goFaster(){
+//-       mph += change;
+//-       change += 1;
+//-       document.getElementById ('faster').textContent = `MPH ${mph} with changes ${change}`;}
+//-       a(href="/Tshirts") View Results
 extends layout
 
 block content
-  h1= Ujwal 
-  p Welcome to #{Ujwal} world <br>
-  button(type="button" class="btn btn-secondary" onclick="goFaster()") Press me 
-
-  div#faster Increase the speed 
-  script.
-    var  mph = 20;
-    var change = 1;
-    function goFaster(){
-      mph += change;
-      change += 1;
-      document.getElementById ('faster').textContent = `MPH ${mph} with changes ${change}`;}
-      a(href="/Tshirts") View Results
-
+  if (!user)
+    a(href="/login") Login
+    br
+    a(href="/register") Register
+  if (user)
+    p You are currently logged in as #{user.username}
+    a(href="/Tshirts") Take me to Tshirts
+    br
+    a(href="/logout") Logout
