@@ -4,9 +4,10 @@ size:{
     type: String,
     required: true
 },
-taste: { 
+color: { 
     type: String,
-    required: true
+    required: true,
+    enum: ["Red", "Blue", "Green", "White", "Black"] 
 },
 price: { 
     type: Number,

@@ -67,10 +67,10 @@ exports.Tshirts_update_put = async function (req, res) {
     try {
         let toUpdate = await Tshirts.findById(req.params.id)
         // Do updates of properties
-        if (req.body.Tshirtssize)
-            toUpdate.Tshirtssize = req.body.Tshirtssize;
-        if (req.body.cost) toUpdate.cost = req.body.cost;
-        if (req.body.size) toUpdate.size = req.body.size;
+        if (req.body.size)
+            toUpdate.size = req.body.size;
+        if (req.body.color) toUpdate.cost = req.body.color;
+        if (req.body.price) toUpdate.size = req.body.price;
         let result = await toUpdate.save();
         console.log("Sucess " + result)
         res.send(result)
