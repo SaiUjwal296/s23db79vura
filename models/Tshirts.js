@@ -1,9 +1,18 @@
 const mongoose = require("mongoose")
 const TshirtsSchema = mongoose.Schema({
-size: String,
-color: String,
-price:Number
-
+size:{ 
+    type: String,
+    required: true
+},
+taste: { 
+    type: String,
+    required: true
+},
+price: { 
+    type: Number,
+    required: true,
+    min: 0,
+    max: 2000
+}
 })
-module.exports = mongoose.model("Tshirts",
-TshirtsSchema)
+module.exports = mongoose.model("Tshirts",TshirtsSchema)
